@@ -219,11 +219,10 @@ function Index() {
               Built by Najish Anjum
             </p>
           </div>
-          <img
-            src={footerBand.url}
-            alt=""
-            className="h-16 w-full object-cover object-bottom sm:h-20"
-          />
+          <div className="relative aspect-[1900/58] w-full overflow-hidden">
+            <img src={footerBand.url} alt="" className="absolute bottom-0 left-0 w-full" />
+          </div>
+
         </footer>
 
 
