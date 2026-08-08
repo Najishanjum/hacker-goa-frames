@@ -211,27 +211,21 @@ function Index() {
         </motion.div>
 
         <footer className="relative -mx-5 mt-auto pt-24 sm:-mx-8">
-          <div className="bg-goa-green pt-10">
-            <img
-              src={footerBand.url}
-              alt=""
-              className="h-16 w-full object-cover object-bottom sm:h-20"
-            />
+          <div className="bg-goa-green px-5 pt-10 text-center">
+            <span className="inline-flex items-center gap-2 rounded-full border border-goa-yellow/60 bg-goa-green-ink/85 px-4 py-2 font-mono-ui text-[11px] font-bold tracking-[0.18em] text-goa-yellow">
+              <GoaSticker className="text-[9px]" /> · 28–31 OCT 2026 · #FrameInGoa
+            </span>
+            <p className="mt-2 pb-4 font-mono-ui text-[11px] tracking-[0.1em] text-goa-white/85">
+              Built by Najish Anjum
+            </p>
           </div>
-          <div className="absolute inset-x-0 bottom-0 top-24 flex flex-col justify-start pt-1">
-
-            <div className="relative grid h-full place-items-center text-center">
-              <div>
-                <span className="inline-flex items-center gap-2 rounded-full border border-goa-yellow/60 bg-goa-green-ink/85 px-4 py-2 font-mono-ui text-[11px] font-bold tracking-[0.18em] text-goa-yellow">
-                  <GoaSticker className="text-[9px]" /> · 28–31 OCT 2026 · #FrameInGoa
-                </span>
-                <p className="mt-2 font-mono-ui text-[11px] tracking-[0.1em] text-goa-white/85">
-                  Built by Najish Anjum
-                </p>
-              </div>
-            </div>
-          </div>
+          <img
+            src={footerBand.url}
+            alt=""
+            className="h-16 w-full object-cover object-bottom sm:h-20"
+          />
         </footer>
+
 
       </main>
     </>
