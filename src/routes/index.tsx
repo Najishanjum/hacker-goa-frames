@@ -113,7 +113,7 @@ function Index() {
 
       <Backdrop />
 
-      <main className="relative min-h-screen px-5 pb-0 pt-12 sm:px-8">
+      <main className="relative flex min-h-screen flex-col px-5 pb-0 pt-12 sm:px-8">
         <motion.header
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
