@@ -221,6 +221,7 @@ function Index() {
           </div>
           <div className="relative aspect-[1900/34] w-full overflow-hidden">
             <img src={footerBand.url} alt="" className="absolute bottom-0 left-0 w-full" />
+            <div className="absolute inset-y-0 left-1/2 w-[min(420px,42%)] -translate-x-1/2 bg-goa-green" />
           </div>
 
         </footer>
