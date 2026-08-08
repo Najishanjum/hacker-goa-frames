@@ -32,7 +32,7 @@ export function IdCard({ b }: { b: Builder }) {
           loading="lazy"
           width={1024}
           height={512}
-          className="pointer-events-none absolute bottom-0 right-0 w-2/3 opacity-30"
+          className="pointer-events-none absolute -bottom-2 right-0 w-1/2 opacity-20"
         />
         <div className="relative">
           <div className="flex items-start justify-between gap-3">
