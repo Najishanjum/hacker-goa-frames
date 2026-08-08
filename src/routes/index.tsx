@@ -8,6 +8,7 @@ import { GoaSticker } from "@/components/hh/GoaSticker";
 import { IntroLoader } from "@/components/hh/IntroLoader";
 import { BuilderForm } from "@/components/hh/BuilderForm";
 import { IdCard, PfpFrame, type Builder } from "@/components/hh/Preview";
+import footerBand from "@/assets/footer-band.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -31,9 +32,12 @@ export const Route = createFileRoute("/")({
 
 type Mode = "card" | "pfp";
 
+const SHARE_TEXT =
+  "Locked in for Hacker House Goa 2026 🌴 28–31 Oct, Goa, India. Make yours 👇 #FrameInGoa";
+
 function Index() {
   const [loading, setLoading] = useState(true);
-  const [mode, setMode] = useState<Mode>("card");
+  const [mode, setMode] = useState<Mode>("pfp");
   const [busy, setBusy] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
   const [builder, setBuilder] = useState<Builder>({
@@ -42,6 +46,9 @@ function Index() {
     handle: "",
     title: "Feral Shipper",
     photo: null,
+    zoom: 1,
+    ox: 0,
+    oy: 0,
   });
 
   const patch = useCallback(
@@ -49,18 +56,53 @@ function Index() {
     [],
   );
 
+  const render = async () => {
+    if (!previewRef.current) return null;
+    return toPng(previewRef.current, { pixelRatio: 3, cacheBust: true });
+  };
+
+  const fileName = `hh-goa-${mode}-${(builder.name || "builder").toLowerCase().replace(/\s+/g, "-")}.png`;
+
   const download = async () => {
-    if (!previewRef.current) return;
     setBusy(true);
     try {
-      const url = await toPng(previewRef.current, { pixelRatio: 3, cacheBust: true });
+      const url = await render();
+      if (!url) return;
       const a = document.createElement("a");
       a.href = url;
-      a.download = `hh-goa-${mode}-${(builder.name || "builder").toLowerCase().replace(/\s+/g, "-")}.png`;
+      a.download = fileName;
       a.click();
     } finally {
       setBusy(false);
     }
+  };
+
+  const shareImage = async () => {
+    setBusy(true);
+    try {
+      const url = await render();
+      if (!url) return;
+      const blob = await (await fetch(url)).blob();
+      const file = new File([blob], fileName, { type: "image/png" });
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file], text: SHARE_TEXT });
+      } else {
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = fileName;
+        a.click();
+      }
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const postOnX = () => {
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(SHARE_TEXT)}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
   };
 
   return (
@@ -71,7 +113,7 @@ function Index() {
 
       <Backdrop />
 
-      <main className="relative min-h-screen px-5 pb-20 pt-12 sm:px-8">
+      <main className="relative min-h-screen px-5 pb-0 pt-12 sm:px-8">
         <motion.header
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -81,10 +123,8 @@ function Index() {
           <p className="font-mono-ui text-[10px] tracking-[0.5em] text-goa-yellow/80">
             28–31 OCT 2026 · ANJUNA, GOA
           </p>
-          <h1 className="mt-4 font-display text-[15vw] uppercase leading-[0.82] tracking-tight text-goa-yellow sm:text-8xl">
-            Hacker
-            <br />
-            House <GoaSticker className="align-super text-[0.3em]" />
+          <h1 className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-display text-[11vw] uppercase leading-[0.9] tracking-tight text-goa-yellow drop-shadow-[0_6px_24px_rgba(0,0,0,0.45)] sm:text-7xl">
+            Hacker House <GoaSticker className="text-[0.42em]" />
           </h1>
           <p className="mx-auto mt-5 max-w-md font-mono-ui text-xs leading-relaxed text-goa-white/75">
             Build your official builder pass. Upload a photo, roll a title, export a PNG, and
@@ -115,7 +155,7 @@ function Index() {
                 </button>
               ))}
             </div>
-            <BuilderForm b={builder} onChange={patch} />
+            <BuilderForm b={builder} onChange={patch} mode={mode} />
           </div>
 
           <div className="lg:sticky lg:top-10 lg:self-start">
@@ -128,24 +168,60 @@ function Index() {
                   exit={{ opacity: 0, scale: 0.97 }}
                   transition={{ duration: 0.3 }}
                 >
-                  {mode === "card" ? <IdCard b={builder} /> : <PfpFrame b={builder} />}
+                  {mode === "card" ? (
+                    <IdCard b={builder} />
+                  ) : (
+                    <PfpFrame b={builder} onAdjust={patch} />
+                  )}
                 </motion.div>
               </AnimatePresence>
             </div>
 
-            <button
-              type="button"
-              onClick={download}
-              disabled={busy}
-              className="mt-6 w-full rounded-2xl bg-goa-yellow py-4 font-mono-ui text-sm font-bold tracking-[0.25em] text-goa-green-ink transition hover:shadow-[0_0_36px_color-mix(in_oklab,var(--goa-yellow)_55%,transparent)] disabled:opacity-60"
-            >
-              {busy ? "RENDERING…" : "DOWNLOAD PNG"}
-            </button>
+            <div className="mt-6 space-y-3">
+              <button
+                type="button"
+                onClick={download}
+                disabled={busy}
+                className="w-full rounded-2xl bg-goa-yellow py-4 font-mono-ui text-sm font-bold tracking-[0.25em] text-goa-green-ink transition hover:shadow-[0_0_36px_color-mix(in_oklab,var(--goa-yellow)_55%,transparent)] disabled:opacity-60"
+              >
+                {busy ? "RENDERING…" : "DOWNLOAD PNG"}
+              </button>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={postOnX}
+                  className="rounded-2xl bg-goa-pink py-3.5 font-mono-ui text-xs font-bold tracking-[0.2em] text-goa-yellow transition hover:shadow-[0_0_30px_color-mix(in_oklab,var(--goa-pink)_60%,transparent)]"
+                >
+                  POST ON X
+                </button>
+                <button
+                  type="button"
+                  onClick={shareImage}
+                  disabled={busy}
+                  className="rounded-2xl border border-goa-yellow/50 py-3.5 font-mono-ui text-xs font-bold tracking-[0.2em] text-goa-yellow transition hover:bg-goa-yellow/10 disabled:opacity-60"
+                >
+                  SHARE IMAGE
+                </button>
+              </div>
+              <p className="text-center font-mono-ui text-[10px] leading-relaxed text-goa-white/55">
+                “{SHARE_TEXT}”
+              </p>
+            </div>
           </div>
         </motion.div>
 
-        <footer className="mx-auto mt-24 max-w-5xl border-t border-goa-yellow/20 pt-6 text-center font-mono-ui text-[10px] tracking-[0.35em] text-goa-white/60">
-          HACKER HOUSE गोवा · #FRAMEDINGOA
+        <footer className="relative mt-24 -mx-5 sm:-mx-8">
+          <img src={footerBand.url} alt="" className="h-28 w-full object-cover sm:h-32" />
+          <div className="absolute inset-0 grid place-items-center gap-2 text-center">
+            <div>
+              <span className="inline-flex items-center gap-2 rounded-full border border-goa-yellow/60 bg-goa-green-ink/80 px-4 py-2 font-mono-ui text-[11px] font-bold tracking-[0.18em] text-goa-yellow">
+                <GoaSticker className="text-[9px]" /> · 28–31 OCT 2026 · #FrameInGoa
+              </span>
+              <p className="mt-2 font-mono-ui text-[11px] tracking-[0.1em] text-goa-white/80">
+                Built by Najish Anjum
+              </p>
+            </div>
+          </div>
         </footer>
       </main>
     </>

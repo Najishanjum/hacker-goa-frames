@@ -10,9 +10,11 @@ const labelClass = "mb-1.5 block font-mono-ui text-[10px] tracking-[0.3em] text-
 export function BuilderForm({
   b,
   onChange,
+  mode,
 }: {
   b: Builder;
   onChange: (patch: Partial<Builder>) => void;
+  mode: "card" | "pfp";
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
@@ -20,7 +22,7 @@ export function BuilderForm({
   const readFile = (file?: File | null) => {
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = () => onChange({ photo: String(reader.result) });
+    reader.onload = () => onChange({ photo: String(reader.result), zoom: 1, ox: 0, oy: 0 });
     reader.readAsDataURL(file);
   };
 
@@ -60,22 +62,80 @@ export function BuilderForm({
         />
       </div>
 
+      {b.photo ? (
+        <div className="space-y-3 rounded-2xl border border-goa-yellow/15 bg-goa-green-deep/45 p-5 backdrop-blur-xl">
+          <div className="flex items-center justify-between">
+            <span className={labelClass + " mb-0"}>CROP & ADJUST</span>
+            <button
+              type="button"
+              onClick={() => onChange({ zoom: 1, ox: 0, oy: 0 })}
+              className="font-mono-ui text-[10px] tracking-widest text-goa-white/70 underline-offset-4 hover:text-goa-yellow hover:underline"
+            >
+              RESET
+            </button>
+          </div>
+          <input
+            type="range"
+            min={1}
+            max={3}
+            step={0.01}
+            aria-label="Zoom"
+            value={b.zoom}
+            onChange={(e) => onChange({ zoom: Number(e.target.value) })}
+            className="w-full accent-goa-pink"
+          />
+          <div className="grid grid-cols-2 gap-3">
+            <label className="font-mono-ui text-[10px] tracking-widest text-goa-white/70">
+              X
+              <input
+                type="range"
+                min={-60}
+                max={60}
+                step={1}
+                value={b.ox}
+                onChange={(e) => onChange({ ox: Number(e.target.value) })}
+                className="w-full accent-goa-yellow"
+              />
+            </label>
+            <label className="font-mono-ui text-[10px] tracking-widest text-goa-white/70">
+              Y
+              <input
+                type="range"
+                min={-60}
+                max={60}
+                step={1}
+                value={b.oy}
+                onChange={(e) => onChange({ oy: Number(e.target.value) })}
+                className="w-full accent-goa-yellow"
+              />
+            </label>
+          </div>
+          <p className="font-mono-ui text-[10px] text-goa-white/50">
+            Drag the photo inside the preview to reposition it.
+          </p>
+        </div>
+      ) : null}
+
       <div className="space-y-4 rounded-2xl border border-goa-yellow/15 bg-goa-green-deep/45 p-5 backdrop-blur-xl">
-        <div>
-          <label className={labelClass} htmlFor="name">NAME</label>
-          <input id="name" className={fieldClass} placeholder="Aarav Sharma" value={b.name}
-            onChange={(e) => onChange({ name: e.target.value })} />
-        </div>
-        <div>
-          <label className={labelClass} htmlFor="stack">STACK / ROLE</label>
-          <input id="stack" className={fieldClass} placeholder="Rust + Solana" value={b.stack}
-            onChange={(e) => onChange({ stack: e.target.value })} />
-        </div>
-        <div>
-          <label className={labelClass} htmlFor="handle">X HANDLE</label>
-          <input id="handle" className={fieldClass} placeholder="@yourhandle" value={b.handle}
-            onChange={(e) => onChange({ handle: e.target.value })} />
-        </div>
+        {mode === "card" ? (
+          <>
+            <div>
+              <label className={labelClass} htmlFor="name">NAME</label>
+              <input id="name" className={fieldClass} placeholder="Aarav Sharma" value={b.name}
+                onChange={(e) => onChange({ name: e.target.value })} />
+            </div>
+            <div>
+              <label className={labelClass} htmlFor="stack">STACK / ROLE</label>
+              <input id="stack" className={fieldClass} placeholder="Rust + Solana" value={b.stack}
+                onChange={(e) => onChange({ stack: e.target.value })} />
+            </div>
+            <div>
+              <label className={labelClass} htmlFor="handle">X HANDLE</label>
+              <input id="handle" className={fieldClass} placeholder="@yourhandle" value={b.handle}
+                onChange={(e) => onChange({ handle: e.target.value })} />
+            </div>
+          </>
+        ) : null}
         <div>
           <label className={labelClass} htmlFor="title">BUILDER TITLE</label>
           <div className="flex gap-2">
