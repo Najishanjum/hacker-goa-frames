@@ -75,6 +75,12 @@
 
 :root {
   --radius: 0.625rem;
+  --goa-green: oklch(0.446 0.121 155.5);
+  --goa-green-deep: oklch(0.33 0.095 155.5);
+  --goa-green-ink: oklch(0.24 0.07 155.5);
+  --goa-yellow: oklch(0.879 0.176 96.2);
+  --goa-pink: oklch(0.63 0.253 5.6);
+  --goa-white: oklch(1 0 0);
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);
   --card: oklch(1 0 0);
