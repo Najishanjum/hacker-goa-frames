@@ -2,17 +2,28 @@ import { useRef } from "react";
 import { GoaSticker } from "./GoaSticker";
 import sunset from "@/assets/sunset.jpg";
 
+export type CardVariant = "classic" | "sunset" | "landscape" | "minimal";
+
+export const CARD_VARIANTS: { id: CardVariant; label: string; hint: string }[] = [
+  { id: "classic", label: "Active Builder Card", hint: "The original HH Goa pass" },
+  { id: "sunset", label: "Sunset Vibe Builder", hint: "Portrait, sunset arch" },
+  { id: "landscape", label: "Landscape Nordic Vibrant", hint: "Wide neon magazine cut" },
+  { id: "minimal", label: "Landscape Natural Builder", hint: "Clean minimal green" },
+];
+
 export type Builder = {
   name: string;
   stack: string;
   handle: string;
   title: string;
   builderId?: string;
+  variant?: CardVariant;
   photo: string | null;
   zoom: number;
   ox: number;
   oy: number;
 };
+
 
 // Deterministic QR Code Scanner component with tropical palm tree center
 export function QRScanner({ seed = "#HH-GOA-5384", size = 84 }: { seed?: string; size?: number }) {
