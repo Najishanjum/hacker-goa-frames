@@ -187,6 +187,169 @@ function ClassicCard({ b }: { b: Builder }) {
   );
 }
 
+function Photo({ b, className, style }: { b: Builder; className?: string; style?: React.CSSProperties }) {
+  return (
+    <div className={className} style={style}>
+      {b.photo ? (
+        <img
+          src={b.photo}
+          alt={b.name || "Builder"}
+          draggable={false}
+          className="h-full w-full select-none object-cover"
+          style={{ transform: `scale(${b.zoom}) translate(${b.ox}%, ${b.oy}%)` }}
+        />
+      ) : (
+        <div className="grid h-full w-full place-items-center px-2 text-center font-mono-ui text-[9px] leading-relaxed text-goa-white/70">
+          Upload a photo
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SunsetCard({ b }: { b: Builder }) {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-goa-yellow/40 bg-goa-green-ink p-5 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.6)]">
+      <div className="flex items-center justify-between">
+        <h3 className="font-display text-2xl uppercase leading-none tracking-tight text-goa-yellow">
+          Hacker House
+        </h3>
+        <GoaSticker className="text-[11px]" />
+      </div>
+
+      <div className="relative mt-4 overflow-hidden rounded-xl bg-goa-green-deep p-6">
+        <img
+          src={sunset}
+          alt=""
+          loading="lazy"
+          className="pointer-events-none absolute inset-x-0 bottom-0 w-full opacity-40"
+        />
+        <Photo
+          b={b}
+          className="relative mx-auto aspect-square w-2/3 overflow-hidden rounded-full border-4 border-goa-yellow bg-goa-green-ink"
+        />
+      </div>
+
+      <div className="mt-4 text-center">
+        <p className="truncate font-display text-2xl uppercase leading-tight text-goa-white">
+          {b.name || "Your Name"}
+        </p>
+        <p className="mt-1 truncate font-mono-ui text-xs font-bold tracking-[0.2em] text-goa-yellow">
+          {b.stack || "Full-Stack"}
+        </p>
+        <span className="mt-3 inline-block rounded-full bg-goa-pink px-3 py-1 font-mono-ui text-[10px] font-black uppercase tracking-wider text-goa-yellow">
+          {b.title || "HACKER"}
+        </span>
+      </div>
+
+      <div className="mt-4 flex items-center justify-between border-t border-goa-yellow/20 pt-3 font-mono-ui text-[9px] tracking-[0.25em] text-goa-white/70">
+        <span>GOA, INDIA · 28–31 OCT 2026</span>
+        <span className="text-goa-yellow">{b.handle || "#FrameInGoa"}</span>
+      </div>
+    </div>
+  );
+}
+
+function LandscapeCard({ b }: { b: Builder }) {
+  return (
+    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-goa-green-deep via-goa-green-ink to-goa-green-deep p-5 shadow-[0_0_50px_-12px_color-mix(in_oklab,var(--goa-pink)_60%,transparent)] ring-1 ring-goa-yellow/40">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1.5 bg-gradient-to-r from-goa-yellow via-goa-pink to-goa-yellow" />
+      <div className="flex items-start justify-between gap-3">
+        <h3 className="font-display text-2xl uppercase leading-none tracking-tight text-goa-yellow sm:text-3xl">
+          Hacker <GoaSticker className="text-[10px] align-middle" /> House
+        </h3>
+        <div className="flex h-7 items-center gap-[2px] rounded bg-white px-2 py-1">
+          {[2, 1, 3, 1, 2, 4, 1, 2, 1, 3, 2, 1, 4, 1, 2].map((w, i) => (
+            <div key={i} className="bg-[#094727]" style={{ width: `${w}px`, height: "100%" }} />
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-4 grid grid-cols-[minmax(0,38%)_minmax(0,1fr)] items-center gap-4">
+        <Photo
+          b={b}
+          className="aspect-[4/5] overflow-hidden rounded-xl border-2 border-goa-yellow/70 bg-goa-green-ink"
+        />
+        <div className="min-w-0 text-center">
+          <p className="truncate font-display text-2xl uppercase leading-tight text-goa-yellow sm:text-3xl">
+            {b.name || "Your Name"}
+          </p>
+          <p className="mt-2 truncate font-mono-ui text-[11px] font-bold tracking-[0.3em] text-goa-white">
+            {b.stack || "AI ENGINEER"}
+          </p>
+          <div className="my-3 h-px w-full bg-gradient-to-r from-transparent via-goa-yellow to-transparent" />
+          <p className="truncate font-mono-ui text-[11px] tracking-[0.25em] text-goa-white/85">
+            {b.title || "HACKER"}
+          </p>
+          <p className="mt-3 truncate font-mono-ui text-[11px] text-goa-yellow">
+            {b.handle || "@yourhandle"}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-4 flex items-end justify-between font-mono-ui text-[9px] tracking-[0.25em] text-goa-white/70">
+        <span>GOA, INDIA · 28–31 OCT 2026</span>
+        <span className="font-black text-goa-yellow">
+          2:47<span className="text-[7px]">PM</span> STUDIO
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function MinimalCard({ b }: { b: Builder }) {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-goa-yellow/30 bg-goa-green-deep p-6 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.6)]">
+      <div className="flex items-center justify-between font-mono-ui text-[9px] tracking-[0.3em] text-goa-white/70">
+        <span>BUILDER PASS</span>
+        <span>{b.builderId || "#HH-GOA-5384"}</span>
+      </div>
+
+      <div className="mt-5 flex items-center gap-4">
+        <Photo
+          b={b}
+          className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-goa-yellow/60 bg-goa-green-ink"
+        />
+        <div className="min-w-0">
+          <p className="truncate font-display text-2xl uppercase leading-tight text-goa-yellow">
+            {b.name || "Your Name"}
+          </p>
+          <p className="truncate font-mono-ui text-[11px] tracking-[0.2em] text-goa-white/85">
+            {b.stack || "Full-Stack"}
+          </p>
+          <p className="truncate font-mono-ui text-[11px] text-goa-white/60">
+            {b.handle || "@yourhandle"}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-5 flex items-center justify-between gap-3 border-t border-goa-yellow/20 pt-4">
+        <span className="rounded-md bg-goa-pink px-2.5 py-1 font-mono-ui text-[10px] font-black uppercase tracking-wider text-goa-yellow">
+          {b.title || "HACKER"}
+        </span>
+        <span className="font-mono-ui text-[9px] tracking-[0.25em] text-goa-white/70">
+          28–31 OCT 2026 · GOA
+        </span>
+      </div>
+    </div>
+  );
+}
+
+export function IdCard({ b }: { b: Builder }) {
+  switch (b.variant) {
+    case "sunset":
+      return <SunsetCard b={b} />;
+    case "landscape":
+      return <LandscapeCard b={b} />;
+    case "minimal":
+      return <MinimalCard b={b} />;
+    default:
+      return <ClassicCard b={b} />;
+  }
+}
+
+
+
 
 export function PfpFrame({
   b,
