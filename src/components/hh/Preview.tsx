@@ -106,7 +106,7 @@ function TicketEdge() {
   );
 }
 
-export function IdCard({ b }: { b: Builder }) {
+function ClassicCard({ b }: { b: Builder }) {
   const uniqueId = b.builderId || "#HH-GOA-5384";
 
   return (
