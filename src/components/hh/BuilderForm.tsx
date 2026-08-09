@@ -1,5 +1,5 @@
 import { useRef, useState, useImperativeHandle, forwardRef } from "react";
-import type { Builder } from "./Preview";
+import { CARD_VARIANTS, type Builder } from "./Preview";
 import { rollTitle } from "@/lib/titles";
 
 const fieldClass =
