@@ -87,6 +87,7 @@ function Index() {
     stack: "",
     handle: "",
     title: "HACKER",
+    variant: "classic",
     builderId: generateUniqueId(),
     photo: null,
     zoom: 1,
