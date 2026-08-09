@@ -87,6 +87,7 @@ function Index() {
     stack: "",
     handle: "",
     title: "HACKER",
+    variant: "classic",
     builderId: generateUniqueId(),
     photo: null,
     zoom: 1,
@@ -165,7 +166,7 @@ function Index() {
           className="mx-auto max-w-5xl text-center"
         >
           <p className="font-mono-ui text-[11px] font-bold tracking-[0.4em] text-goa-yellow/90">
-            28–31 OCT 2026 · ANJUNA, GOA
+            28–31 OCT 2026 · GOA
           </p>
           <AnimatedTitle />
           <p className="mx-auto mt-4 max-w-lg font-mono-ui text-xs leading-relaxed text-goa-white/90">
