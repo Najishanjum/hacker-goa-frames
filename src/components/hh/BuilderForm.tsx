@@ -154,6 +154,46 @@ export const BuilderForm = forwardRef<
         </div>
       ) : null}
 
+      {/* Frame selector (Builder Pass only) */}
+      {mode === "card" ? (
+        <div className="rounded-2xl border border-goa-yellow/25 bg-goa-green-deep/60 p-5 backdrop-blur-xl">
+          <span className={labelClass}>SELECT FRAME</span>
+          <div className="grid grid-cols-2 gap-3">
+            {CARD_VARIANTS.map((v) => {
+              const active = (b.variant ?? "classic") === v.id;
+              return (
+                <button
+                  key={v.id}
+                  type="button"
+                  onClick={() => onChange({ variant: v.id })}
+                  className={`rounded-xl border p-3 text-left transition ${
+                    active
+                      ? "border-goa-yellow bg-goa-yellow/10 shadow-[0_0_24px_color-mix(in_oklab,var(--goa-yellow)_35%,transparent)]"
+                      : "border-goa-yellow/20 bg-goa-green-ink/60 hover:border-goa-yellow/60"
+                  }`}
+                >
+                  <span
+                    className={`block h-12 w-full rounded-md border border-goa-yellow/30 ${
+                      v.id === "classic"
+                        ? "bg-[linear-gradient(90deg,var(--goa-pink)_0_6px,var(--goa-yellow)_6px_12px)] bg-[length:12px_6px] bg-repeat-x bg-goa-green-ink"
+                        : v.id === "sunset"
+                          ? "bg-gradient-to-b from-goa-green-ink to-goa-yellow/60"
+                          : v.id === "landscape"
+                            ? "bg-gradient-to-r from-goa-green-deep via-goa-pink/50 to-goa-yellow/60"
+                            : "bg-goa-green-deep"
+                    }`}
+                  />
+                  <span className="mt-2 block font-mono-ui text-[11px] font-bold tracking-wider text-goa-white">
+                    {v.label}
+                  </span>
+                  <span className="block font-mono-ui text-[9px] text-goa-white/60">{v.hint}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
+
       {/* Form Fields: Only Title in PFP mode; Name, Stack, Handle, Title in Card mode */}
       <div className="space-y-4 rounded-2xl border border-goa-yellow/25 bg-goa-green-deep/60 p-5 backdrop-blur-xl">
         {mode === "card" ? (
