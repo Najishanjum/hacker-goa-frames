@@ -4,6 +4,7 @@ Build a visually stunning web app called:
 
 "HACKER HOUSE GOA – ID GENERATOR"
 
+Goa in the waitlist and we are all to head on locked in 
 This must exactly match a premium tropical hacker + editorial magazine aesthetic inspired by Goa.
 
 --------------------------------------------------
